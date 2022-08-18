@@ -1,0 +1,50 @@
+package ru.netology;
+
+import java.util.Arrays;
+
+public class TicketManager {
+
+    private TicketRepository repo;
+
+    public TicketManager(TicketRepository repo) {
+        this.repo = repo;
+    }
+
+    public void add(Ticket ticket) {
+        repo.save(ticket);
+    }
+
+    public Ticket[] searchBy(String from, String to) {
+        Ticket[] result = new Ticket[0]; // тут будем хранить подошедшие запросу продукты
+        for (Ticket ticket : repo.getTickets()) {
+            if (matches(ticket, from, to)) {
+                // "добавляем в конец" массива result продукт product
+                Ticket[] tmp = new Ticket[result.length + 1];
+                for (int i = 0; i < result.length; i++) {
+                    tmp[i] = result[i];
+                }
+                tmp[tmp.length - 1] = ticket;
+                result = tmp;
+            }
+        }
+        Arrays.sort(result);
+        return result;
+    }
+
+    public boolean matches(Ticket ticket, String from, String to) {
+        if (ticket.getDeparture().contains(from) & ticket.getArrival().contains(to)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public Ticket[] getAllTickets() {
+        Ticket[] all = repo.getTickets();
+        return all;
+    }
+
+}
+
+
