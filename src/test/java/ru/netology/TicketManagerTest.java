@@ -15,6 +15,7 @@ public class TicketManagerTest {
     Ticket ticket3 = new Ticket(15, 1_100, "SVO", "VVO", 300);
     Ticket ticket4 = new Ticket(16, 1_200, "SVO", "VVO", 120);
     Ticket ticket5 = new Ticket(17, 1_300, "SVO", "AER", 60);
+    Ticket ticket6 = new Ticket(31, 1_400, "SVO", "DME", 10);
 
 
     @BeforeEach
@@ -52,6 +53,25 @@ public class TicketManagerTest {
 
         Ticket[] expected = {ticket1, ticket3, ticket4};
         Ticket[] actual = manager.searchBy("SVO", "VVO");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void findTicketOne() {
+
+        repo.save(ticket6);
+
+        Ticket[] expected = {ticket6};
+        Ticket[] actual = manager.searchBy("SVO", "DME");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void findTicketNoFound() {
+
+
+        Ticket[] expected = {};
+        Ticket[] actual = manager.searchBy("SVO", "VCO");
 
         Assertions.assertArrayEquals(expected, actual);
     }
